@@ -1,7 +1,9 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 /**
  * The Tallyer class provides functionality for reading ID and topic pairs from user input,
@@ -52,8 +54,31 @@ public class Tallyer {
     public static Map<String, Integer> tallyTopics(List<String> topics) {
         // WAVE 1
         // TODO: Implement this method
+        
+        // Creating a new HashMap since we need to return a map
+        Map<String, Integer> tallyMap = new HashMap<>();
 
-        return null;
+        //go through the list of topics 1 at a time
+        for (String topic : topics){
+            // if the map does not yet contain a topic
+            if (!tallyMap.containsKey(topic)) {
+                // add the map to the list with a count of 1
+                tallyMap.put(topic, 1);
+            } else { // if the topic is already in the map
+                // retrieve and store the current count as topicCount
+                int topicCount = tallyMap.get(topic);
+
+                //increase the topic count by 1 (for the new item)
+                topicCount = topicCount + 1;
+                
+                //put new number in the map
+                tallyMap.put(topic,topicCount);
+            }
+
+        }
+        
+        // return the map after we've gon through the list of topics
+        return tallyMap;
     }
 
     /**
