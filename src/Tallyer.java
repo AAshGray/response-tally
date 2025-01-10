@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,9 +77,12 @@ public class Tallyer {
             }
 
         }
-        
-        // return the map after we've gon through the list of topics
-        return tallyMap;
+        // You didn't say if you wanted it sorted by keys or by value
+        // TreeMap keys are automatically sorted, so we can put the HashMap in a TreeMap to sort by keys
+        TreeMap<String, Integer> sortedTallyMap = new TreeMap<>(tallyMap);
+
+        // return the map. Tallyer is not looking for a specific kind of map, so any kind is fine.
+        return sortedTallyMap;
     }
 
     /**
@@ -97,6 +101,30 @@ public class Tallyer {
       // WAVE 2
       // TODO: Implement this method
 
-      return null;
+      // Setting up a list for "valid" topic entries
+      List<String> validEntries = new ArrayList<>();
+
+      // go through the list of ids one at a time
+      for (int i = 0; i < ids.size(); i++) {
+        
+        /*
+         I looked up collections.frequency() for this part
+         https://docs.oracle.com/javase/7/docs/api/java/util/Collections.html#frequency(java.util.Collection,%20java.lang.Object).
+         Collections.frequency will return the number of items in the given array (first parameter) which match the criteria (second parameter).
+         By setting the second parameter to retrieve (ids.get()) the current value of the index we can automatically check how many items matching that index is in the array.
+
+         With a little more work I think I could add a piece so we weren't re-checking IDs that we already know are invalid
+         */ 
+        int numberEntries = Collections.frequency(ids, ids.get(i));
+        if (numberEntries == 2) {
+            // we're looking for ids with two votes
+            // if the ID is valid (2 votes) that should get added to our new list of valid topics
+            validEntries.add(topics.get(i));
+        }
+      }
+        // at the end of going through our list of ids, we should have a list of valid topics to be tallied
+        // this can be passed to the method we already wrote and returned
+
+      return tallyTopics(validEntries);
   }
 }
